@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <limits.h>
+#define NUM_PARTITIONS 6
+#define NUM_PROCESSES 5
+int memoryPartitions[NUM_PARTITIONS] = {300, 600, 350, 200, 750, 125};
+int processes[NUM_PROCESSES] = {115, 500, 358, 200, 375};
+int allocatedPartitions[NUM_PROCESSES] = {-1, -1, -1, -1, -1};
+void bestFit() {
+    for (int i = 0; i < NUM_PROCESSES; ++i) {
+        int bestFitIndex = -1;
+        int bestFitSize = INT_MAX;
+        for (int j = 0; j < NUM_PARTITIONS; ++j) {
+            if (memoryPartitions[j] >= processes[i] && memoryPartitions[j] < bestFitSize) {
+                bestFitIndex = j;
+                bestFitSize = memoryPartitions[j];
+            }
+        }
+        if (bestFitIndex != -1) {
+            allocatedPartitions[i] = bestFitIndex;
+            memoryPartitions[bestFitIndex] -= processes[i];
+        }
+    }
+}
+void displayMemoryStatus() {
+    printf("\nMemory Status:\n");
+    for (int i = 0; i < NUM_PARTITIONS; ++i) {
+        printf("Partition %d: %d KB\n", i + 1, memoryPartitions[i]);
+    }
+}
+void displayAllocation() {
+    printf("\nMemory Allocation:\n");
+    printf("Process\t\tSize\t\tAllocated Partition\n");
+    for (int i = 0; i < NUM_PROCESSES; ++i) {
+        printf("%d\t\t%d KB\t\t", i + 1, processes[i]);
+        if (allocatedPartitions[i] != -1) {
+            printf("%d\n", allocatedPartitions[i] + 1);
+        } else {
+            printf("Not Allocated\n");
+        }
+    }
+}
+int main() {
+    printf("Initial Memory Partitions:\n");
+    displayMemoryStatus();
+    bestFit();
+    printf("\nMemory Allocation using Best-Fit Algorithm:\n");
+    displayAllocation();
+    displayMemoryStatus();
+    return 0;
+}
