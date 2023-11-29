@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <pthread.h>
+#include <semaphore.h>
+int sharedMemory = 10;
+sem_t semaphore;
+void *printValue(void *factor) {
+    sem_wait(&semaphore);
+    printf("Value multiplied by %d: %d\n", *((int*)factor), sharedMemory * *((int*)factor));
+    sem_post(&semaphore);
+    pthread_exit(NULL);
+}
+int main() {
+    sem_init(&semaphore, 0, 1);
+    pthread_t thread1, thread2;
+    int factor1 = 2;
+    int factor2 = 5;
+    pthread_create(&thread1, NULL, printValue, (void*)&factor1);
+    pthread_create(&thread2, NULL, printValue, (void*)&factor2);
+    pthread_join(thread1, NULL);
+    pthread_join(thread2, NULL);
+    sem_destroy(&semaphore);
+    return 0;
+}
