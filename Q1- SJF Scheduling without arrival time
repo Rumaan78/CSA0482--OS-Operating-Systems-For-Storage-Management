@@ -1,0 +1,46 @@
+#include <stdio.h>
+#define N 4
+void sort(int burst[], int process[]) {
+    for (int i = 0; i < N - 1; i++) {
+        for (int j = 0; j < N - i - 1; j++) {
+            if (burst[j] > burst[j + 1]) {
+                int temp = burst[j];
+                burst[j] = burst[j + 1];
+                burst[j + 1] = temp;
+                temp = process[j];
+                process[j] = process[j + 1];
+                process[j + 1] = temp;
+            }
+        }
+    }
+}
+void compute(int burst[], int wait[], int turn[]) {
+    wait[0] = 0;
+    turn[0] = burst[0];
+    for (int i = 1; i < N; i++) {
+        wait[i] = wait[i - 1] + burst[i - 1];
+        turn[i] = wait[i] + burst[i];
+    }
+}
+void print(int burst[], int process[], int wait[], int turn[]) {
+    float avg_wait = 0, avg_turn = 0;
+    printf("Process\tBurst Time\tWaiting Time\tTurnaround Time\n");
+    for (int i = 0; i < N; i++) {
+        printf("P%d\t%d\t\t%d\t\t%d\n", process[i], burst[i], wait[i], turn[i]);
+        avg_wait += wait[i];
+        avg_turn += turn[i];
+    }
+    avg_wait /= N;
+    avg_turn /= N;
+    printf("Average Waiting Time: %.2f\n", avg_wait);
+    printf("Average Turnaround Time: %.2f\n", avg_turn);
+}
+int main() {
+    int burst[N] = {6, 8, 7, 3};
+    int process[N] = {1, 2, 3, 4};
+    int wait[N], turn[N];
+    sort(burst, process);
+    compute(burst, wait, turn);
+    print(burst, process, wait, turn);
+    return 0;
+}
