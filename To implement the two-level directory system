@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX_USERS 3
+#define MAX_FILES_PER_USER 3
+#define MAX_FILENAME_LENGTH 20
+typedef struct {
+    char filename[MAX_FILENAME_LENGTH];
+} File;
+typedef struct {
+    char username[MAX_FILENAME_LENGTH];
+    File files[MAX_FILES_PER_USER];
+    int num_files;
+} UserDirectory;
+typedef struct {
+    UserDirectory users[MAX_USERS];
+    int num_users;
+} DirectorySystem;
+File createFile(const char *filename) {
+    File newFile;
+    strncpy(newFile.filename, filename, MAX_FILENAME_LENGTH);
+    return newFile;
+}
+UserDirectory createUserDirectory(const char *username) {
+    UserDirectory newUserDirectory = { .num_files = 0 };
+    strncpy(newUserDirectory.username, username, MAX_FILENAME_LENGTH);
+    return newUserDirectory;
+}
+void addFileToUserDirectory(UserDirectory *userDirectory, const char *filename) {
+    if (userDirectory->num_files < MAX_FILES_PER_USER) {
+        userDirectory->files[userDirectory->num_files++] = createFile(filename);
+    } else {
+        printf("Error: User directory is full. Cannot add more files.\n");
+    }
+}
+int main() {
+    DirectorySystem directorySystem = { .num_users = 0 };
+    directorySystem.users[directorySystem.num_users++] = createUserDirectory("user1");
+    directorySystem.users[directorySystem.num_users++] = createUserDirectory("user2");
+    directorySystem.users[directorySystem.num_users++] = createUserDirectory("user3");
+    addFileToUserDirectory(&directorySystem.users[0], "file1_user1.txt");
+    addFileToUserDirectory(&directorySystem.users[0], "file2_user1.txt");
+    addFileToUserDirectory(&directorySystem.users[0], "file3_user1.txt");
+    addFileToUserDirectory(&directorySystem.users[1], "file1_user2.txt");
+    addFileToUserDirectory(&directorySystem.users[1], "file2_user2.txt");
+    addFileToUserDirectory(&directorySystem.users[2], "file1_user3.txt");
+    addFileToUserDirectory(&directorySystem.users[2], "file2_user3.txt");
+    printf("Directory Structure:\n");
+    for (int i = 0; i < directorySystem.num_users; ++i) {
+        printf("User Directory: %s\n", directorySystem.users[i].username);
+        printf("Files:\n");
+        for (int j = 0; j < directorySystem.users[i].num_files; ++j) {
+            printf("  %s\n", directorySystem.users[i].files[j].filename);
+        }
+        printf("\n");
+    }
+    return 0;
+}
