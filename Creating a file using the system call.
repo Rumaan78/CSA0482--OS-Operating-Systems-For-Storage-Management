@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#define MAX_SIZE 100
+int main() {
+    int file_descriptor;
+    char data[MAX_SIZE];
+    file_descriptor = open("example.txt", O_CREAT | O_WRONLY, 0644);
+    if (file_descriptor == -1) {
+        perror("Error creating file");
+        return 1;
+    }
+    printf("Enter data to write to the file (max %d characters):\n", MAX_SIZE);
+    fgets(data, MAX_SIZE, stdin);
+    if (write(file_descriptor, data, sizeof(data)) == -1) {
+        perror("Error writing to file");
+        close(file_descriptor);
+        return 1;
+    }
+    close(file_descriptor);
+    file_descriptor = open("example.txt", O_RDONLY);
+    if (file_descriptor == -1) {
+        perror("Error opening file for reading");
+        return 1;
+    }
+    printf("Data read from the file:\n");
+    while (read(file_descriptor, data, sizeof(data)) > 0) {
+        printf("%s", data);
+    }
+    close(file_descriptor);
+    return 0;
+}
