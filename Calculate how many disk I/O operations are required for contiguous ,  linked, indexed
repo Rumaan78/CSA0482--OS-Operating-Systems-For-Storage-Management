@@ -1,0 +1,27 @@
+#include <stdio.h>
+int contiguousAllocation(int blockNumber, int fileLength) {
+    return 1;
+}
+int linkedAllocation(int blockNumber, int fileLength) {
+    return blockNumber;
+}
+int indexedAllocation(int blockNumber, int fileLength) {
+    return 1;
+}
+int main() {
+    int blockNumber, fileLength;
+    fileLength = 100;
+    blockNumber = 1;
+    printf("Contiguous Allocation - Case a: %d\n", contiguousAllocation(blockNumber, fileLength));
+    printf("Linked Allocation - Case a: %d\n", linkedAllocation(blockNumber, fileLength));
+    printf("Indexed Allocation - Case a: %d\n", indexedAllocation(blockNumber, fileLength));
+    blockNumber = fileLength / 2;
+    printf("Contiguous Allocation - Case b: %d\n", contiguousAllocation(blockNumber, fileLength));
+    printf("Linked Allocation - Case b: %d\n", linkedAllocation(blockNumber, fileLength));
+    printf("Indexed Allocation - Case b: %d\n", indexedAllocation(blockNumber, fileLength));
+    blockNumber = fileLength;
+    printf("Contiguous Allocation - Case c: %d\n", contiguousAllocation(blockNumber, fileLength));
+    printf("Linked Allocation - Case c: %d\n", linkedAllocation(blockNumber, fileLength));
+    printf("Indexed Allocation - Case c: %d\n", indexedAllocation(blockNumber, fileLength));
+    return 0;
+}
