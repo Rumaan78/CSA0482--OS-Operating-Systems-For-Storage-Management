@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define BLOCK_SIZE 8192 // 8 KB
+#define BLOCK_SIZE 8
 #define POINTER_SIZE 4
 struct Inode {
     int direct_blocks[12];
