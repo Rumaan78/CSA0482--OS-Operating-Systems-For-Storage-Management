@@ -1,0 +1,51 @@
+#include <stdio.h>
+int main() {
+    int processes = 3;
+    int resources = 3;
+
+    int max[3][3] = {
+        {3, 6, 8},
+        {4, 3, 3},
+        {3, 4, 4}
+    };
+    int allocation[3][3] = {
+        {3, 3, 3},
+        {2, 0, 3},
+        {1, 2, 4}
+    };
+    int available[3] = {0, 0, 0};
+    int finish[3] = {0};
+    int deadlock = 0;
+
+    for (int j = 0; j < resources; j++) {
+        for (int i = 0; i < processes; i++) {
+            available[j] += allocation[i][j];
+        }
+    }
+    for (int i = 0; i < processes; i++) {
+        if (!finish[i]) {
+            int canFinish = 1;
+            for (int j = 0; j < resources; j++) {
+                if (max[i][j] - allocation[i][j] > available[j]) {
+                    canFinish = 0;
+                    break;
+                }
+            }
+            if (canFinish) {
+                for (int j = 0; j < resources; j++) {
+                    available[j] += allocation[i][j];
+                }
+                finish[i] = 1;
+                i = -1; 
+            }
+        }
+    }
+    for (int i = 0; i < processes; i++) {
+        if (!finish[i]) {
+            deadlock = 1;
+            break;
+        }
+    }
+    printf("The system is %s in a deadlock.\n", deadlock ? "in" : "not");
+    return 0;
+}
