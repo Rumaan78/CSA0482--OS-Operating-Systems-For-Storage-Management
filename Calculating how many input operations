@@ -1,0 +1,39 @@
+#include<stdio.h>
+int contiguousAllocation(int blockSize, int totalBlocks, int position) {
+    return 2;
+}
+int linkedAllocation(int blockSize, int totalBlocks, int position) {
+    return position + 1;
+}
+int indexedAllocation(int blockSize, int totalBlocks, int position) {
+    return 2;
+}
+int main() {
+    int blockSize = 1; 
+    int totalBlocks = 100; 
+    int positionBeginning = 0;
+    int positionMiddle = totalBlocks / 2;
+    int positionEnd = totalBlocks - 1;
+    int contiguousOpsBegin = contiguousAllocation(blockSize, totalBlocks, positionBeginning);
+    int contiguousOpsMiddle = contiguousAllocation(blockSize, totalBlocks, positionMiddle);
+    int contiguousOpsEnd = contiguousAllocation(blockSize, totalBlocks, positionEnd);
+    int linkedOpsBegin = linkedAllocation(blockSize, totalBlocks, positionBeginning);
+    int linkedOpsMiddle = linkedAllocation(blockSize, totalBlocks, positionMiddle);
+    int linkedOpsEnd = linkedAllocation(blockSize, totalBlocks, positionEnd);
+    int indexedOpsBegin = indexedAllocation(blockSize, totalBlocks, positionBeginning);
+    int indexedOpsMiddle = indexedAllocation(blockSize, totalBlocks, positionMiddle);
+    int indexedOpsEnd = indexedAllocation(blockSize, totalBlocks, positionEnd);
+    printf("Contiguous Allocation:\n");
+    printf("Beginning: %d operations\n", contiguousOpsBegin);
+    printf("Middle: %d operations\n", contiguousOpsMiddle);
+    printf("End: %d operations\n", contiguousOpsEnd);
+    printf("\nLinked Allocation:\n");
+    printf("Beginning: %d operations\n", linkedOpsBegin);
+    printf("Middle: %d operations\n", linkedOpsMiddle);
+    printf("End: %d operations\n", linkedOpsEnd);
+    printf("\nIndexed Allocation:\n");
+    printf("Beginning: %d operations\n", indexedOpsBegin);
+    printf("Middle: %d operations\n", indexedOpsMiddle);
+    printf("End: %d operations\n", indexedOpsEnd);
+    return 0;
+}
